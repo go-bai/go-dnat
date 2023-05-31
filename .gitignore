@@ -1,2 +1,4 @@
-dnat*
-go-dnat*
+dnat
+dnat-linux-amd64
+dnat-linux-arm64
+go-dnat
