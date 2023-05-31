@@ -4,7 +4,7 @@
 
 ```bash
 apt/yum install jq -y
-APP_VERSION=`curl -s GET https://api.github.com/repos/go-bai/go-dnat/tags\?per_page=1 | jq -r '.[].name'`
+export APP_VERSION=`curl -s GET https://api.github.com/repos/go-bai/go-dnat/tags\?per_page=1 | jq -r '.[].name'`
 
 bash <(curl -Ls https://raw.githubusercontent.com/go-bai/go-dnat/master/install.sh)
 ```
