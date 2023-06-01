@@ -3,9 +3,7 @@
 #### 一键安装
 
 ```bash
-apt/yum install jq -y
-export APP_VERSION=`curl -s GET https://api.github.com/repos/go-bai/go-dnat/tags\?per_page=1 | jq -r '.[].name'`
-
+apt install jq curl -y
 bash <(curl -Ls https://raw.githubusercontent.com/go-bai/go-dnat/master/install.sh)
 ```
 
