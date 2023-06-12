@@ -16,11 +16,13 @@ USAGE:
    dnat [global options] command [command options] [arguments...]
 
 COMMANDS:
-   append    append a rule to the end of nat chain if it does not exist
-   delete    delete a rule by id
-   list, ls  list all rules
-   get       get one rule by id
-   help, h   Shows a list of commands or help for one command
+   append      append a rule to the end of nat chain if it does not exist
+   delete      delete a rule by id
+   list, ls    list all rules
+   get         get one rule by id
+   sync        sync rules to local machine
+   version, v  print version
+   help, h     Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
    --help, -h  show help
