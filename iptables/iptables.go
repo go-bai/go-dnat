@@ -21,6 +21,13 @@ func AppendRule(iface string, port int, dest string) error {
 		"-m", "comment", "--comment", comment); err != nil {
 		return err
 	}
+
+	if err := ipt.AppendUnique("nat", "PREROUTING",
+		"-i", iface, "-p", "udp", "--dport", strconv.Itoa(port), "-j", "DNAT", "--to-destination", dest,
+		"-m", "comment", "--comment", comment); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -35,6 +42,13 @@ func DeleteRule(iface string, port int, dest string) error {
 		"-m", "comment", "--comment", comment); err != nil {
 		return err
 	}
+
+	if err := ipt.DeleteIfExists("nat", "PREROUTING",
+		"-i", iface, "-p", "udp", "--dport", strconv.Itoa(port), "-j", "DNAT", "--to-destination", dest,
+		"-m", "comment", "--comment", comment); err != nil {
+		return err
+	}
+
 	return nil
 }
 
