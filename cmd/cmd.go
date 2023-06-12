@@ -18,6 +18,7 @@ func InitCmd() cli.App {
 			deleteCommand,
 			listCommand,
 			getCommand,
+			syncCommand,
 			versionCommand,
 		},
 	}
@@ -94,4 +95,11 @@ var getCommand = &cli.Command{
 			Required: true,
 		},
 	},
+}
+
+var syncCommand = &cli.Command{
+	Name:    "sync",
+	Aliases: []string{},
+	Usage:   "sync rules to local machine",
+	Action:  Sync,
 }

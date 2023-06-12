@@ -77,3 +77,17 @@ func Get(cCtx *cli.Context) error {
 	printTable([]*rulemodel.Rule{rule})
 	return nil
 }
+
+func Sync(cCtx *cli.Context) error {
+	rules, err := rulemodel.List()
+	if err != nil {
+		return err
+	}
+
+	for _, rule := range rules {
+		if err := iptables.AppendRule(rule.Iface, rule.Port, rule.Dest); err != nil {
+			return err
+		}
+	}
+	return nil
+}
