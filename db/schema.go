@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS rule (
 	iface TEXT,
 	port INTEGER,
 	dest TEXT,
+	comment TEXT,
 	created_at DATETIME,
 	UNIQUE(iface, port)
 )

@@ -31,6 +31,27 @@ func AppendRule(iface string, port int, dest string) error {
 	return nil
 }
 
+func AppendMasqueradeRule(iface string) error {
+	ipt, err := iptables.New()
+	if err != nil {
+		return err
+	}
+
+	if err := ipt.AppendUnique("nat", "POSTROUTING",
+		"-o", iface, "-p", "tcp", "-j", "MASQUERADE",
+		"-m", "comment", "--comment", comment); err != nil {
+		return err
+	}
+
+	if err := ipt.AppendUnique("nat", "POSTROUTING",
+		"-o", iface, "-p", "udp", "-j", "MASQUERADE",
+		"-m", "comment", "--comment", comment); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func DeleteRule(iface string, port int, dest string) error {
 	ipt, err := iptables.New()
 	if err != nil {
@@ -45,6 +66,27 @@ func DeleteRule(iface string, port int, dest string) error {
 
 	if err := ipt.DeleteIfExists("nat", "PREROUTING",
 		"-i", iface, "-p", "udp", "--dport", strconv.Itoa(port), "-j", "DNAT", "--to-destination", dest,
+		"-m", "comment", "--comment", comment); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func DeleteMasqueradeRule(iface string) error {
+	ipt, err := iptables.New()
+	if err != nil {
+		return err
+	}
+
+	if err := ipt.DeleteIfExists("nat", "POSTROUTING",
+		"-o", iface, "-p", "tcp", "-j", "MASQUERADE",
+		"-m", "comment", "--comment", comment); err != nil {
+		return err
+	}
+
+	if err := ipt.DeleteIfExists("nat", "POSTROUTING",
+		"-o", iface, "-p", "udp", "-j", "MASQUERADE",
 		"-m", "comment", "--comment", comment); err != nil {
 		return err
 	}

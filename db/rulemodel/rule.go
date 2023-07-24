@@ -11,6 +11,7 @@ type Rule struct {
 	Iface     string
 	Port      int
 	Dest      string
+	Comment   string
 	CreatedAt time.Time `db:"created_at"`
 }
 

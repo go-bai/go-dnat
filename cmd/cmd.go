@@ -5,6 +5,7 @@ import (
 	"net"
 
 	"github.com/urfave/cli/v2"
+	"golang.org/x/exp/slices"
 )
 
 var appName = "dnat"
@@ -16,8 +17,9 @@ func InitCmd() cli.App {
 		Commands: []*cli.Command{
 			appendCommand,
 			deleteCommand,
-			listCommand,
 			getCommand,
+			listCommand,
+			masqueradeCommand,
 			syncCommand,
 			versionCommand,
 		},
@@ -58,6 +60,11 @@ var appendCommand = &cli.Command{
 				_, err := net.ResolveTCPAddr("tcp", dest)
 				return err
 			},
+		},
+		&cli.StringFlag{
+			Name:     "comment",
+			Aliases:  []string{"m"},
+			Required: false,
 		},
 	},
 }
@@ -102,4 +109,32 @@ var syncCommand = &cli.Command{
 	Aliases: []string{},
 	Usage:   "sync rules to local machine",
 	Action:  Sync,
+}
+
+var masqueradeCommand = &cli.Command{
+	Name:    "masquerade",
+	Aliases: []string{},
+	Usage:   "append or delete masquerade rule",
+	Action:  Masquerade,
+	Flags: []cli.Flag{
+		&cli.StringFlag{
+			Name:     "option",
+			Usage:    "append or delete",
+			Required: true,
+			Action: func(ctx *cli.Context, s string) error {
+				if !slices.Contains([]string{"append", "delete"}, s) {
+					return fmt.Errorf("only support append and delete options, not support for %s", s)
+				}
+				return nil
+			},
+		},
+		&cli.StringFlag{
+			Name:     "out-interface",
+			Aliases:  []string{"o"},
+			Required: true,
+			Action: func(ctx *cli.Context, s string) error {
+				return nil
+			},
+		},
+	},
 }

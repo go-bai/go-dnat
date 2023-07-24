@@ -11,17 +11,18 @@ import (
 )
 
 func Append(cCtx *cli.Context) error {
-	iface, port, dest := cCtx.String("i"), cCtx.Int("p"), cCtx.String("d")
+	iface, port, dest, comment := cCtx.String("i"), cCtx.Int("p"), cCtx.String("d"), cCtx.String("m")
 
 	rule := &rulemodel.Rule{
 		Iface:     iface,
 		Port:      port,
 		Dest:      dest,
+		Comment:   comment,
 		CreatedAt: time.Now(),
 	}
 
 	err := db.Tx(func(tx *sqlx.Tx) error {
-		_, err := tx.NamedExec("INSERT INTO rule (iface, port, dest, created_at) VALUES (:iface, :port, :dest, :created_at)", rule)
+		_, err := tx.NamedExec("INSERT INTO rule (iface, port, dest, comment, created_at) VALUES (:iface, :port, :dest, :comment, :created_at)", rule)
 		if err != nil {
 			return err
 		}
@@ -86,6 +87,21 @@ func Sync(cCtx *cli.Context) error {
 
 	for _, rule := range rules {
 		if err := iptables.AppendRule(rule.Iface, rule.Port, rule.Dest); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func Masquerade(cCtx *cli.Context) error {
+	option, iface := cCtx.String("option"), cCtx.String("o")
+	switch option {
+	case "append":
+		if err := iptables.AppendMasqueradeRule(iface); err != nil {
+			return err
+		}
+	case "delete":
+		if err := iptables.DeleteMasqueradeRule(iface); err != nil {
 			return err
 		}
 	}
