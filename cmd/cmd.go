@@ -5,7 +5,6 @@ import (
 	"net"
 
 	"github.com/urfave/cli/v2"
-	"golang.org/x/exp/slices"
 )
 
 var appName = "dnat"
@@ -117,16 +116,17 @@ var masqueradeCommand = &cli.Command{
 	Usage:   "append or delete masquerade rule",
 	Action:  Masquerade,
 	Flags: []cli.Flag{
-		&cli.StringFlag{
-			Name:     "option",
-			Usage:    "append or delete",
-			Required: true,
-			Action: func(ctx *cli.Context, s string) error {
-				if !slices.Contains([]string{"append", "delete"}, s) {
-					return fmt.Errorf("only support append and delete options, not support for %s", s)
-				}
-				return nil
-			},
+		&cli.BoolFlag{
+			Name:     "append",
+			Aliases:  []string{"A"},
+			Required: false,
+			Value:    false,
+		},
+		&cli.BoolFlag{
+			Name:     "delete",
+			Aliases:  []string{"D"},
+			Required: false,
+			Value:    false,
 		},
 		&cli.StringFlag{
 			Name:     "out-interface",

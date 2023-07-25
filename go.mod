@@ -11,7 +11,6 @@ require (
 	github.com/simukti/sqldb-logger v0.0.0-20230108155151-646c1a075551
 	github.com/simukti/sqldb-logger/logadapter/zerologadapter v0.0.0-20230108155151-646c1a075551
 	github.com/urfave/cli/v2 v2.25.4
-	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
 	modernc.org/sqlite v1.22.1
 )
 
