@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/go-bai/go-dnat/db"
@@ -71,7 +70,8 @@ func List(cCtx *cli.Context) error {
 }
 
 func Get(cCtx *cli.Context) error {
-	rule, err := rulemodel.Get(cCtx.Int64("id"))
+	id := cCtx.Int64("id")
+	rule, err := rulemodel.Get(id)
 	if err != nil {
 		return err
 	}
@@ -96,7 +96,6 @@ func Sync(cCtx *cli.Context) error {
 
 func Masquerade(cCtx *cli.Context) error {
 	append, delete, iface := cCtx.Bool("append"), cCtx.Bool("delete"), cCtx.String("o")
-	fmt.Println(append, delete, iface)
 	switch {
 	case append:
 		if err := iptables.AppendMasqueradeRule(iface); err != nil {

@@ -74,11 +74,11 @@ root@dev:~# dnat delete -id 1
 #### 开启 masquerade
 
 ```bash
-dnat masquerade -A -o eth0
+root@dev:~# dnat masquerade -A -o eth0
 ```
 
-### 关闭 masquerade
+#### 关闭 masquerade
 
 ```bash
-dnat masquerade -D -o eth0
+root@dev:~# dnat masquerade -D -o eth0
 ```
